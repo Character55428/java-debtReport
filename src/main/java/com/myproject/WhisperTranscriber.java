@@ -24,9 +24,8 @@ public class WhisperTranscriber {
         }
         String wavPath = ProjectContext.getSelectedVideoPath().replaceAll("\\.mp4$", ".wav"); 
 
-        // =================================================================
-        // 1. FFmpeg 提取音軌
-        // =================================================================
+      
+        //  FFmpeg 提取音軌
         try {
             System.out.println(" --> 正在啟動 FFmpeg 提取 16kHz 單聲道音軌...");
             File tempWav = new File(wavPath);
@@ -58,9 +57,8 @@ public class WhisperTranscriber {
             return;
         }
 
-        // =================================================================
+        
         // 2. 啟動 Whisper AI 辨識
-        // =================================================================
         File wavFile = new File(wavPath);
         if (!wavFile.exists() || wavFile.length() == 0) {
             System.out.println(" X 錯誤：找不到音訊暫存實體，無法辨識。");
