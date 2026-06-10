@@ -28,7 +28,7 @@ public class VideoPlayer extends JFrame {
     private final JFXPanel jfxPanel = new JFXPanel();
     private MediaPlayer mediaPlayer;
     private MediaView mediaView;
-    private Slider fxSlider; // 💡 使用 JavaFX 原生 Slider，完美與播放器同步不卡死
+    private Slider fxSlider; 
     private JLabel statusLabel;
 
     public VideoPlayer() {
@@ -47,7 +47,7 @@ public class VideoPlayer extends JFrame {
 
         JButton chooseButton = new JButton("選擇電腦中的影片檔 (.mp4)");
         chooseButton.setFont(new Font("Microsoft JhengHei", Font.BOLD, 14));
-        chooseButton.setBackground(new Color(0, 122, 255)); // 質感藍
+        chooseButton.setBackground(new Color(0, 122, 255)); 
         chooseButton.setForeground(Color.WHITE);
         chooseButton.setFocusPainted(false);
         topPanel.add(chooseButton, BorderLayout.WEST);
@@ -73,7 +73,7 @@ public class VideoPlayer extends JFrame {
                 // 存入全域共享中心，供其他 AI 字幕模組提取路徑
                 ProjectContext.setSelectedVideoPath(selectedFile.getAbsolutePath());
                 
-                // 💡 強制交給 JavaFX 執行緒去處理影片載入與播放
+                // 交給 JavaFX 執行緒去處理影片載入與播放
                 Platform.runLater(() -> startPlayback(selectedFile.getAbsolutePath()));
             }
         });
@@ -82,12 +82,7 @@ public class VideoPlayer extends JFrame {
         Platform.runLater(this::initFXAndLayout);
     }
 
-    /**
-     * 💡 初始化 JavaFX 的場景與佈局
-     */
-    /**
-     * 💡 初始化 JavaFX 的場景與佈局 (完美修復畫面卡出螢幕、控制列被擠掉的問題)
-     */
+    
     private void initFXAndLayout() {
         BorderPane root = new BorderPane();
         root.setStyle("-fx-background-color: black;");
@@ -95,8 +90,6 @@ public class VideoPlayer extends JFrame {
         // 1. 建立影片顯示畫面
         mediaView = new MediaView();
         
-        // 💡 關鍵修正 1：不要給死高度！改用綁定（Binding）讓影片畫面隨著視窗大小自動縮放
-        // 這樣無論視窗怎麼拉，影片永遠會乖乖待在格子裡，絕對不會把底部的按鈕擠出去
         javafx.scene.layout.StackPane videoContainer = new javafx.scene.layout.StackPane();
         videoContainer.setStyle("-fx-background-color: black;");
         videoContainer.getChildren().add(mediaView);
@@ -142,7 +135,6 @@ public class VideoPlayer extends JFrame {
         controlsContainer.setStyle("-fx-background-color: #222; -fx-padding: 10; -fx-alignment: center;");
         controlsContainer.getChildren().addAll(fxSlider, playPauseBtn);
         
-        // 💡 關鍵修正 2：確保控制面板有固定高度，不會被壓縮
         controlsContainer.setMinHeight(80); 
         
         root.setBottom(controlsContainer);
@@ -151,9 +143,7 @@ public class VideoPlayer extends JFrame {
         jfxPanel.setScene(scene);
     }
 
-    /**
-     * 💡 核心播放與進度條同步邏輯（完全在 FX Thread 執行）
-     */
+
     private void startPlayback(String filePath) {
         try {
             if (mediaPlayer != null) {
@@ -166,14 +156,14 @@ public class VideoPlayer extends JFrame {
             mediaPlayer = new MediaPlayer(media);
             mediaView.setMediaPlayer(mediaPlayer);
 
-            // 💡 當影片載入完成 (Ready) 時，動態初始化進度條的最大值
+            
             mediaPlayer.setOnReady(() -> {
                 double totalSeconds = mediaPlayer.getTotalDuration().toSeconds();
                 fxSlider.setMax(totalSeconds);
                 System.out.println(" 🎥 影片載入成功，總長度: " + totalSeconds + " 秒。進度條解鎖！");
             });
 
-            // 💡 隨著影片播放，自動同步更新進度條的位置
+            
             mediaPlayer.currentTimeProperty().addListener((observable, oldTime, newTime) -> {
                 if (!fxSlider.isValueChanging()) {
                     // 如果使用者沒有在拖拉，進度條就跟著影片時間走
