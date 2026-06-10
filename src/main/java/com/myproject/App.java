@@ -7,7 +7,7 @@ public class App {
         System.out.println("? 偵測到作業系統: Windows 11");
         System.out.println("找到 1 個影片，準備開始批次處理...\n");
 
-        // 假定你要處理的影片路徑
+        // 假定要處理的影片路徑
         String videoPath = "C:\\Users\\user\\Desktop\\VIDEO\\TEST_VDEIO.mp4";
         System.out.println("? 正在處理: TEST_VDEIO.mp4");
 
